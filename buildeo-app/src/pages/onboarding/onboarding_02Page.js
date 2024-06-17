@@ -21,7 +21,7 @@ function OnboardingNext() {
                     <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Home')}>
                          <Text style={styles.txtBtn}>Anbieter-Login</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Home')}>
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Login')}>
                          <Text style={styles.txtBtn}>Käufer-Login</Text>
                     </TouchableOpacity>
                </View>
