@@ -19,18 +19,21 @@
 
 
 .bg {
-  background-image: url('../public/Auth/bg.png');
+  background-image: url('/Auth/bg.png');
   background-size:cover;
   height: 100vh;
   width: 100%;
   background-repeat:initial;
 }
-.landing{
-  background-image:url('../public/landing.png');
-  background-size: cover; /* atau 'contain' */
-  background-position: center; /* atau 'top', 'bottom', 'left', 'right' */
+.landing {
+  background-image: url('/landing.png');
+  background-position: center;
   background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;  
 }
+
 
 .fade-in {
   animation: fadeIn 1s ease-in-out;
@@ -39,4 +42,8 @@
 .navbar {
   position: relative; 
   z-index: 10;
+}
+
+.orange{
+  color:#FF460A
 }
