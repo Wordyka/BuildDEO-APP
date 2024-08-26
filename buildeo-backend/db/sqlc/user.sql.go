@@ -91,11 +91,18 @@ func (q *Queries) GetUser(ctx context.Context, id int64) (User, error) {
 const listUsers = `-- name: ListUsers :many
 SELECT id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by 
 FROM users
-ORDER BY id ASC
+ORDER BY id 
+LIMIT $1
+OFFSET $2
 `
 
-func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, listUsers)
+type ListUsersParams struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, listUsers, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
@@ -130,31 +137,18 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 
 const updateUser = `-- name: UpdateUser :one
 UPDATE users
-SET name = $2, email = $3, password = $4, phone = $5, role = $6, updated_at = now(), updated_by = $7
+SET name = $2
 WHERE id = $1
 RETURNING id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by
 `
 
 type UpdateUserParams struct {
-	ID        int64  `json:"id"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	Phone     string `json:"phone"`
-	Role      string `json:"role"`
-	UpdatedBy int64  `json:"updated_by"`
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, updateUser,
-		arg.ID,
-		arg.Name,
-		arg.Email,
-		arg.Password,
-		arg.Phone,
-		arg.Role,
-		arg.UpdatedBy,
-	)
+	row := q.db.QueryRowContext(ctx, updateUser, arg.ID, arg.Name)
 	var i User
 	err := row.Scan(
 		&i.ID,

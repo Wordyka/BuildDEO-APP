@@ -15,11 +15,13 @@ LIMIT 1;
 -- name: ListUsers :many
 SELECT * 
 FROM users
-ORDER BY id ASC;
+ORDER BY id 
+LIMIT $1
+OFFSET $2;
 
 -- name: UpdateUser :one
 UPDATE users
-SET name = $2, email = $3, password = $4, phone = $5, role = $6, updated_at = now(), updated_by = $7
+SET name = $2
 WHERE id = $1
 RETURNING *;
 
