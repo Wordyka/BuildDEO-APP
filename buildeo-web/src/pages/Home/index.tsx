@@ -2,10 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Navbar from "../../Components/Ui/header";
 import { Input } from "../../Components/Ui/input";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
-import cover from '../../../public/cover.png'
+import Card from "../../Components/Ui/cardMenu";
 export default function Home() {
-
-
 
   const cardData = Array(5).fill({
     title: 'Lay LVT: up to 20 m²',
@@ -13,19 +11,9 @@ export default function Home() {
     price: '119€'
   });
 
-  const Card = ({ title, company, price }) => (
-    <div className="card bg-white rounded-[10px] w-[213px] p-[12px] shadow">
-      <img src={cover} alt="Cover" className="rounded-[10px]" />
-      <div className="font-bold text-[18px] mt-[12px]">{title}</div>
-      <div className="text-[12px] text-[#9586A8] mt-[4px]">{company}</div>
-      <div className="text-[12px] text-[#9586A8] mt-[20px]">start from:</div>
-      <div className="font-bold text-[18px] text-[#FF460A]">{price}</div>
-    </div>
-  );
-
   return (
     <>
-      <div className="landing">
+      <div className="landing n">
         <Navbar />
         <div className="text-white text-[28px] font-bold text-center mt-[120px]">
           Einfach günstigeren Handwerker finden
@@ -33,7 +21,7 @@ export default function Home() {
         <div className="text-white text-[18px] text-center">
           Finden Sie hochwertige Handwerker zu erschwinglichen Preisen in Ihrer Nähe
         </div>
-        <div className="flex justify-center mt-[20px] pb-[120px]">
+        <div className="flex justify-center mt-[20px] pb-[0px]">
           <div className="relative w-[476px]">
             <FontAwesomeIcon icon={faSearch} className="absolute top-[18px] left-[10px] " color="grey" />
             <Input
