@@ -1,20 +1,23 @@
 import React from 'react';
-import cover from '/cover.png'
+import { Link } from 'react-router-dom';
 
 interface CardProps {
     title: string;
     company: string;
     price: string;
+    img:string
 }
 
-const Card: React.FC<CardProps> = ({ title, company, price }) => (
+const Card: React.FC<CardProps> = ({ title, company, price ,img }) => (
+    <Link to={'/menu-detail'}>
     <div className="card bg-white rounded-[10px] w-[213px] p-[12px] shadow">
-        <img src={cover} alt="Cover" className="rounded-[10px]" />
+        <img src={img} alt="Cover" className="rounded-[10px]" />
         <div className="font-bold text-[18px] mt-[12px]">{title}</div>
         <div className="text-[12px] text-[#9586A8] mt-[4px]">{company}</div>
         <div className="text-[12px] text-[#9586A8] mt-[20px]">start from:</div>
         <div className="font-bold text-[18px] text-[#FF460A]">{price}</div>
     </div>
+    </Link>
 );
 
 export default Card;

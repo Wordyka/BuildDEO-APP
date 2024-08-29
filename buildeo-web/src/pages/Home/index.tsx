@@ -3,6 +3,9 @@ import Navbar from "../../Components/Ui/header";
 import { Input } from "../../Components/Ui/input";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import Card from "../../Components/Ui/cardMenu";
+import cover from '../../../public/cover.png'
+import media from '../../../public/Media.png'
+import jobs from '../../../public/jobs.png'
 export default function Home() {
 
   const cardData = Array(5).fill({
@@ -44,6 +47,7 @@ export default function Home() {
               title={card.title}
               company={card.company}
               price={card.price}
+              img={cover}
             />
           ))}
         </div>
@@ -62,6 +66,7 @@ export default function Home() {
               title={card.title}
               company={card.company}
               price={card.price}
+              img={media}
             />
           ))}
         </div>
@@ -80,6 +85,7 @@ export default function Home() {
               title={card.title}
               company={card.company}
               price={card.price}
+              img={jobs}
             />
           ))}
         </div>
@@ -98,6 +104,7 @@ export default function Home() {
               title={card.title}
               company={card.company}
               price={card.price}
+              img={cover}
             />
           ))}
         </div>

@@ -5,6 +5,9 @@ import Box from '@mui/material/Box';
 import React from "react";
 import Card from "../../Components/Ui/cardMenu";
 import Footer from "../../Components/Ui/footer";
+import cover from '../../../public/cover.png'
+import media from '../../../public/Media.png'
+import jobs from '../../../public/jobs.png'
 export default function MenuPage() {
      const [value, setValue] = React.useState('one');
 
@@ -58,6 +61,7 @@ export default function MenuPage() {
                                                        title={card.title}
                                                        company={card.company}
                                                        price={card.price}
+                                                       img={cover}
                                                   />
                                              ))}
                                         </div>
@@ -72,6 +76,7 @@ export default function MenuPage() {
                                                        title={card.title}
                                                        company={card.company}
                                                        price={card.price}
+                                                       img={media}
                                                   />
                                              ))}
                                         </div>
@@ -86,6 +91,7 @@ export default function MenuPage() {
                                                        title={card.title}
                                                        company={card.company}
                                                        price={card.price}
+                                                       img={jobs}
                                                   />
                                              ))}
                                         </div>

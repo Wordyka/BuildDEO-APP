@@ -4,7 +4,15 @@ import NumberInput from '../../Components/Ui/inputNumber'
 import { Avatar, AvatarFallback, AvatarImage } from '../../Components/Ui/avatar'
 import DynamicRating from '../../Components/Ui/rating'
 import Footer from '../../Components/Ui/footer'
+import { useNavigate } from 'react-router-dom';
 export default function DetailMenuPage() {
+
+     const navigate = useNavigate();
+
+
+     const pay = () =>{
+          navigate('/menu-detail/payment');
+     }
      return (
           <>
                <div className="">
@@ -26,7 +34,7 @@ export default function DetailMenuPage() {
                                              <div className=""><NumberInput /></div>
                                              <div className="text-[32px] font-bold">119€</div>
                                         </div>
-                                        <div className="text-[20px] mt-[50px] font-bold text-center text-white"><button className='bg-[#FF460A] rounded-[40px] p-[11px] w-full hover:bg-[#ffffff] hover:border hover:border-[1.5px] hover:border-[#ff460a] hover:text-[#ff460a] transition-colors duration-200'>Offer</button></div>
+                                        <div className="text-[20px] mt-[50px] font-bold text-center text-white"><button onClick={pay}  className='bg-[#FF460A] rounded-[40px] p-[11px] w-full hover:bg-[#ffffff] hover:border hover:border-[1.5px] hover:border-[#ff460a] hover:text-[#ff460a] transition-colors duration-200'>Offer</button></div>
                                    </div>
                               </div>
                          </div>
