@@ -6,12 +6,13 @@ import (
 	"strconv"
 
 	db "github.com/Oppir07/BuildDEO-APP/db/sqlc"
+	"github.com/Oppir07/BuildDEO-APP/util"
 	"github.com/gin-gonic/gin"
 )
 
 type createUserRequest struct {
 	Email     string `json:"email" binding:"required"`
-	Password  string `json:"password" binding:"required"`
+	Password  string `json:"password" binding:"required,min=6"`
 	Name      string `json:"name" binding:"required"`
 	Phone     string `json:"phone" binding:"required"`
 	Role      string `json:"role" binding:"required,oneof=buyer seller admin"`
@@ -26,9 +27,15 @@ func (server *Server) createUser(ctx *gin.Context) {
 		return
 	}
 
+	hashedPassword, err := util.HashPassword(req.Password)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
 	arg := db.CreateUserParams{
 		Email:     req.Email,
-		Password:  req.Password,
+		Password:  hashedPassword,
 		Name:      req.Name,
 		Phone:     req.Phone,
 		Role:      req.Role,
@@ -83,8 +90,6 @@ func (server *Server) getUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, user)
 }
 
-
-
 type listAccountRequest struct {
 	PageID   int32 `form:"page_id" binding:"required,min=1"`
 	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
@@ -111,7 +116,6 @@ func (server *Server) listUser(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, users)
 }
-
 
 type updateUserRequest struct {
 	Email     string `json:"email" binding:"omitempty,email"`
@@ -149,11 +153,17 @@ func (server *Server) updateUser(ctx *gin.Context) {
 		return
 	}
 
+	hashedPassword, err := util.HashPassword(req.Password)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
 	// Merge the existing data with the request data
 	arg := db.UpdateUserParams{
 		ID:        id,
 		Email:     req.Email,
-		Password:  req.Password,
+		Password:  hashedPassword,
 		Name:      req.Name,
 		Phone:     req.Phone,
 		Role:      req.Role,

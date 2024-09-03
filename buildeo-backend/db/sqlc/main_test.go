@@ -6,18 +6,20 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Oppir07/BuildDEO-APP/util"
 	_ "github.com/go-sql-driver/mysql"
-)
-
-const (
-    dbDriver = "mysql"
-    dbSource = "dbo00113303:Xwd_$331pWq@tcp(127.0.0.1:3307)/db00113303?parseTime=true&loc=Local"
 )
 
 var testQueries *Queries
 
 func TestMain(m *testing.M) {
-	conn, err := sql.Open(dbDriver, dbSource)
+	config, err := util.LoadConfig("../../")
+	if err != nil {
+		log.Fatal("cannot load config", err)
+	}
+	log.Printf("Loaded config: %#v", config)
+
+	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
