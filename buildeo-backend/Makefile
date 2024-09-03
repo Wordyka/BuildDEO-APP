@@ -2,7 +2,7 @@ MIGRATE_BIN = $(HOME)/go/bin/migrate
 
 DB_URL = "mysql://dbo00113303:Xwd_%24331pWq@tcp(127.0.0.1:3307)/db00113303"
 
-server:
+ssh:
 	ssh -L 3307:127.0.0.1:3306 u3067231@81.169.178.128
 
 migrateup:
@@ -16,5 +16,8 @@ sqlc:
 
 test:
 	go test -v -cover ./...
+
+server:
+	go run main.go
 
 .PHONY: server migrateup migratedown sqlc test

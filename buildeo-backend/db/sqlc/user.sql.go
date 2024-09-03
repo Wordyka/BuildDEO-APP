@@ -122,15 +122,28 @@ func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, e
 
 const updateUser = `-- name: UpdateUser :execresult
 UPDATE users
-SET name = ?
+SET email = ?, password = ?, name = ?, phone = ?, role = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP
 WHERE id = ?
 `
 
 type UpdateUserParams struct {
-	Name string `json:"name"`
-	ID   int64  `json:"id"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	Name      string `json:"name"`
+	Phone     string `json:"phone"`
+	Role      string `json:"role"`
+	UpdatedBy int64  `json:"updated_by"`
+	ID        int64  `json:"id"`
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (sql.Result, error) {
-	return q.db.ExecContext(ctx, updateUser, arg.Name, arg.ID)
+	return q.db.ExecContext(ctx, updateUser,
+		arg.Email,
+		arg.Password,
+		arg.Name,
+		arg.Phone,
+		arg.Role,
+		arg.UpdatedBy,
+		arg.ID,
+	)
 }

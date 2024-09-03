@@ -19,7 +19,7 @@ LIMIT ? OFFSET ?;
 
 -- name: UpdateUser :execresult
 UPDATE users
-SET name = ?
+SET email = ?, password = ?, name = ?, phone = ?, role = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP
 WHERE id = ?;
 
 -- name: DeleteUser :exec
