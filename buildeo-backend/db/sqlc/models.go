@@ -35,7 +35,7 @@ type Chat struct {
 	ID      int64 `json:"id"`
 	User1ID int64 `json:"user1_id"`
 	User2ID int64 `json:"user2_id"`
-	// active or restricted
+	// active or inactive
 	Status    string    `json:"status"`
 	CreatedAt time.Time `json:"created_at"`
 	CreatedBy int64     `json:"created_by"`
@@ -77,7 +77,7 @@ type Quotation struct {
 	Phone       string `json:"phone"`
 	Address     string `json:"address"`
 	DocumentUrl string `json:"document_url"`
-	// on process, rejected, or done
+	// open, in_progress, or completed
 	Status     string         `json:"status"`
 	AdminID    sql.NullInt64  `json:"admin_id"`
 	AdminNotes sql.NullString `json:"admin_notes"`

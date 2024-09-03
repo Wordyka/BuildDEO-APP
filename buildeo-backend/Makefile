@@ -1,24 +1,20 @@
-DB_URL = postgresql://root:secret@localhost:5432/buildeo?sslmode=disable
+MIGRATE_BIN = $(HOME)/go/bin/migrate
 
-postgres:
-	docker run --name postgres12 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
+DB_URL = "mysql://dbo00113303:Xwd_%24331pWq@tcp(127.0.0.1:3307)/db00113303"
 
-createdb:
-	docker exec -ti postgres12 createdb --username=root --owner=root buildeo
-
-dropdb:
-	docker exec -ti postgres12 dropdb buildeo
+server:
+	ssh -L 3307:127.0.0.1:3306 u3067231@81.169.178.128
 
 migrateup:
-	migrate -path db/migration -database "$(DB_URL)" -verbose up 
+	$(MIGRATE_BIN) -path db/migration -database $(DB_URL) -verbose up
 
 migratedown:
-	migrate -path db/migration -database "$(DB_URL)" -verbose down 
+	$(MIGRATE_BIN) -path db/migration -database $(DB_URL) -verbose down
 
 sqlc:
 	sqlc generate
 
-test : 
+test:
 	go test -v -cover ./...
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test
+.PHONY: server migrateup migratedown sqlc test

@@ -6,12 +6,12 @@ import (
 	"os"
 	"testing"
 
-	_ "github.com/lib/pq"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
-	dbDriver = "postgres"
-	dbSource = "postgresql://root:secret@localhost:5432/buildeo?sslmode=disable"
+    dbDriver = "mysql"
+    dbSource = "dbo00113303:Xwd_$331pWq@tcp(127.0.0.1:3307)/db00113303?parseTime=true&loc=Local"
 )
 
 var testQueries *Queries

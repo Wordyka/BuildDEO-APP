@@ -1,29 +1,26 @@
--- name: CreateUser :one
+-- name: CreateUser :execresult
 INSERT INTO users (
   email, password, name, phone, role, created_by, updated_by
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7
-)
-RETURNING *;
+  ?, ?, ?, ?, ?, ?, ?
+);
 
 -- name: GetUser :one
 SELECT * 
 FROM users
-WHERE id = $1
+WHERE id = ?
 LIMIT 1;
 
 -- name: ListUsers :many
 SELECT * 
 FROM users
 ORDER BY id 
-LIMIT $1
-OFFSET $2;
+LIMIT ? OFFSET ?;
 
--- name: UpdateUser :one
+-- name: UpdateUser :execresult
 UPDATE users
-SET name = $2
-WHERE id = $1
-RETURNING *;
+SET name = ?
+WHERE id = ?;
 
 -- name: DeleteUser :exec
-DELETE FROM users WHERE id = $1;
+DELETE FROM users WHERE id = ?;

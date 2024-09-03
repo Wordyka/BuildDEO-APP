@@ -7,15 +7,15 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
-const createUser = `-- name: CreateUser :one
+const createUser = `-- name: CreateUser :execresult
 INSERT INTO users (
   email, password, name, phone, role, created_by, updated_by
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7
+  ?, ?, ?, ?, ?, ?, ?
 )
-RETURNING id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by
 `
 
 type CreateUserParams struct {
@@ -28,8 +28,8 @@ type CreateUserParams struct {
 	UpdatedBy int64  `json:"updated_by"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, createUser,
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createUser,
 		arg.Email,
 		arg.Password,
 		arg.Name,
@@ -38,24 +38,10 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		arg.CreatedBy,
 		arg.UpdatedBy,
 	)
-	var i User
-	err := row.Scan(
-		&i.ID,
-		&i.Email,
-		&i.Password,
-		&i.Name,
-		&i.Phone,
-		&i.Role,
-		&i.CreatedAt,
-		&i.CreatedBy,
-		&i.UpdatedAt,
-		&i.UpdatedBy,
-	)
-	return i, err
 }
 
 const deleteUser = `-- name: DeleteUser :exec
-DELETE FROM users WHERE id = $1
+DELETE FROM users WHERE id = ?
 `
 
 func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
@@ -66,7 +52,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
 const getUser = `-- name: GetUser :one
 SELECT id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by 
 FROM users
-WHERE id = $1
+WHERE id = ?
 LIMIT 1
 `
 
@@ -92,8 +78,7 @@ const listUsers = `-- name: ListUsers :many
 SELECT id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by 
 FROM users
 ORDER BY id 
-LIMIT $1
-OFFSET $2
+LIMIT ? OFFSET ?
 `
 
 type ListUsersParams struct {
@@ -135,32 +120,17 @@ func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, e
 	return items, nil
 }
 
-const updateUser = `-- name: UpdateUser :one
+const updateUser = `-- name: UpdateUser :execresult
 UPDATE users
-SET name = $2
-WHERE id = $1
-RETURNING id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by
+SET name = ?
+WHERE id = ?
 `
 
 type UpdateUserParams struct {
-	ID   int64  `json:"id"`
 	Name string `json:"name"`
+	ID   int64  `json:"id"`
 }
 
-func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, updateUser, arg.ID, arg.Name)
-	var i User
-	err := row.Scan(
-		&i.ID,
-		&i.Email,
-		&i.Password,
-		&i.Name,
-		&i.Phone,
-		&i.Role,
-		&i.CreatedAt,
-		&i.CreatedBy,
-		&i.UpdatedAt,
-		&i.UpdatedBy,
-	)
-	return i, err
+func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, updateUser, arg.Name, arg.ID)
 }
