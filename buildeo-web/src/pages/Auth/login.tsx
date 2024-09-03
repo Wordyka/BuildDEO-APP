@@ -16,6 +16,9 @@ export default function LoginPage() {
      const regist = () =>{
           navigate('/register');
      }
+     const home = () =>{
+          navigate('/home');
+     }
 
      return (
           <>
@@ -59,7 +62,7 @@ export default function LoginPage() {
                                              </Link>
                                         </div>
                                         <div className="">
-                                             <button className='bg-[#FF460A] font-bold rounded-[40px] text-white text-center w-full'>
+                                             <button onClick={home} className='bg-[#FF460A] font-bold rounded-[40px] text-white text-center w-full'>
                                                   <div className="p-4">Login</div>
                                              </button>
                                         </div>

@@ -5,20 +5,30 @@ import Home from "./pages/Home";
 import MenuPage from "./pages/Menu";
 import DetailMenuPage from "./pages/Menu/detail";
 import PaymentPage from "./pages/Menu/payment";
+import ProfilePage from "./pages/Profile";
+import OrdersPage from "./pages/Profile/orders";
+import ResultPage from "./pages/Profile/Review/result";
+import ReviewPage from "./pages/Profile/Review/review";
+import EditPage from "./pages/Profile/Review/edit";
 // import Home from "./pages/Home";
 
 
 export default function App() {
   return (
-   <Router>
-    <Routes>
-      <Route path="/" element={<LoginPage/>}/>
-      <Route path="/register" element={<RegisterPage/>}/>
-      <Route path="/home" element={<Home/>}/>
-      <Route path="/menu" element={<MenuPage/>}/>
-      <Route path="/menu-detail" element={<DetailMenuPage/>}/>
-      <Route path="/menu-detail/payment" element={<PaymentPage/>}/>
-    </Routes>
-   </Router>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/menu-detail" element={<DetailMenuPage />} />
+        <Route path="/menu-detail/payment" element={<PaymentPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/orders/review" element={<ReviewPage />} />
+        <Route path="/orders/review/result" element={<ResultPage />} />
+        <Route path="/orders/review/edit" element={<EditPage />} />
+      </Routes>
+    </Router>
   )
 }

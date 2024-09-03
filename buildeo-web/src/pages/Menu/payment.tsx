@@ -24,7 +24,6 @@ export default function PaymentPage() {
                               <div className="text-[16px] text-[#9586A8]" >Choose yout  Payment method</div>
                               <div className="mt-10">
                                    <PaymentMethod/>
-                                   
                               </div>
                          </div>
                          <div className="pb-[300px]">
