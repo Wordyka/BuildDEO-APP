@@ -7,7 +7,6 @@ import (
 	"time"
 
 	db "github.com/Oppir07/BuildDEO-APP/db/sqlc"
-	"github.com/Oppir07/BuildDEO-APP/token"
 	"github.com/Oppir07/BuildDEO-APP/util"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -24,6 +23,7 @@ type createUserRequest struct {
 }
 
 type userResponse struct {
+	ID        int64    `json:"id" binding:"required"`
 	Email     string    `json:"email" binding:"required"`
 	Name      string    `json:"name" binding:"required"`
 	Phone     string    `json:"phone" binding:"required"`
@@ -33,10 +33,11 @@ type userResponse struct {
 
 func newUserResponse(user db.User) userResponse {
 	return userResponse{
+		ID:        user.ID,
 		Name:      user.Name,
 		Email:     user.Email,
 		Phone:     user.Phone,
-		Role:     user.Role,
+		Role:      user.Role,
 		UpdatedAt: user.UpdatedAt,
 	}
 }
@@ -83,7 +84,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 		return
 	}
 
-	rsp:= newUserResponse(user)
+	rsp := newUserResponse(user)
 
 	ctx.JSON(http.StatusOK, rsp)
 }
@@ -99,7 +100,6 @@ func (server *Server) getUser(ctx *gin.Context) {
 		return
 	}
 
-
 	user, err := server.store.GetUserByID(ctx, req.ID)
 
 	if err != nil {
@@ -112,9 +112,9 @@ func (server *Server) getUser(ctx *gin.Context) {
 
 	}
 
-	rsp:= newUserResponse(user)
+	rsp := newUserResponse(user)
 
-	// authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	//authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 
 	ctx.JSON(http.StatusOK, rsp)
 }
@@ -144,7 +144,6 @@ func (server *Server) listUser(ctx *gin.Context) {
 
 	}
 
-	
 	ctx.JSON(http.StatusOK, users)
 }
 
@@ -326,4 +325,3 @@ func (server *Server) loginUser(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, rsp)
 }
-
