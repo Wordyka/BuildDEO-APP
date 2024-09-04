@@ -48,7 +48,7 @@ func TestCreateUser(t *testing.T) {
 	user := createRandomUser(t)
 
 	// Verify user exists in the database
-	dbUser, err := testQueries.GetUser(context.Background(), user.ID)
+	dbUser, err := testQueries.GetUserByID(context.Background(), user.ID)
 	require.NoError(t, err)
 	require.Equal(t, user.ID, dbUser.ID)
 	require.Equal(t, user.Email, dbUser.Email)
@@ -64,7 +64,7 @@ func TestGetUser(t *testing.T) {
 	// Create a new user first
 	user := createRandomUser(t)
 
-	retrievedUser, err := testQueries.GetUser(context.Background(), user.ID)
+	retrievedUser, err := testQueries.GetUserByID(context.Background(), user.ID)
 	require.NoError(t, err)
 	require.Equal(t, user.ID, retrievedUser.ID)
 	require.Equal(t, user.Email, retrievedUser.Email)
@@ -86,7 +86,7 @@ func TestUpdateUser(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify the user is updated
-	updatedUser, err := testQueries.GetUser(context.Background(), user.ID)
+	updatedUser, err := testQueries.GetUserByID(context.Background(), user.ID)
 	require.NoError(t, err)
 	require.Equal(t, arg.Name, updatedUser.Name)
 }
@@ -98,7 +98,7 @@ func TestDeleteUser(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify user is deleted
-	_, err = testQueries.GetUser(context.Background(), user.ID)
+	_, err = testQueries.GetUserByID(context.Background(), user.ID)
 	require.Error(t, err)
 	require.Equal(t, sql.ErrNoRows, err)
 }

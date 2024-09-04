@@ -8,8 +8,15 @@ INSERT INTO users (
 -- name: GetUser :one
 SELECT * 
 FROM users
+WHERE email = ?
+LIMIT 1;
+
+-- name: GetUserByID :one
+SELECT * 
+FROM users
 WHERE id = ?
 LIMIT 1;
+
 
 -- name: ListUsers :many
 SELECT * 

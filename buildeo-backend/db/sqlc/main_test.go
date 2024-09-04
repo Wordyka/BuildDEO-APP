@@ -12,6 +12,7 @@ import (
 
 var testQueries *Queries
 
+
 func TestMain(m *testing.M) {
 	config, err := util.LoadConfig("../../")
 	if err != nil {
