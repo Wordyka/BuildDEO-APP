@@ -1,9 +1,7 @@
 package api
 
 import (
-	"crypto/md5"
 	"database/sql"
-	"encoding/binary"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -12,7 +10,6 @@ import (
 	db "github.com/Oppir07/BuildDEO-APP/db/sqlc"
 	"github.com/Oppir07/BuildDEO-APP/token"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 // Request and Response Structs
@@ -151,7 +148,6 @@ type listQuotationsRequest struct {
 	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
 }
 
-
 func (server *Server) listQuotations(ctx *gin.Context) {
 	var req listQuotationsRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
@@ -162,7 +158,6 @@ func (server *Server) listQuotations(ctx *gin.Context) {
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 
 	user, err := server.store.GetUser(ctx, authPayload.Username)
-
 
 	arg := db.ListQuotationsParams{
 		AdminID: sql.NullInt64{user.ID, true},
