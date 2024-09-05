@@ -13,32 +13,41 @@ import (
 )
 
 type createUserRequest struct {
-	Email     string `json:"email" binding:"required"`
-	Password  string `json:"password" binding:"required,min=6"`
-	Name      string `json:"name" binding:"required"`
-	Phone     string `json:"phone" binding:"required"`
-	Role      string `json:"role" binding:"required,oneof=buyer seller admin"`
-	CreatedBy int64  `json:"created_by" binding:"required"`
-	UpdatedBy int64  `json:"updated_by" binding:"required"`
+	Email      string `json:"email" binding:"required"`
+	Password   string `json:"password" binding:"required,min=6"`
+	Firstname  string `json:"firstname" binding:"required"`
+	Lastname   string `json:"lastname" binding:"required"`
+	PostNumber string `json:"post_number" binding:"required"`
+	Street     string `json:"street" binding:"required"`
+	Phone      string `json:"phone" binding:"required"`
+	Role       string `json:"role" binding:"required,oneof=buyer seller admin"`
+	CreatedBy  int64  `json:"created_by" binding:"required"`
+	UpdatedBy  int64  `json:"updated_by" binding:"required"`
 }
 
 type userResponse struct {
-	ID        int64    `json:"id" binding:"required"`
-	Email     string    `json:"email" binding:"required"`
-	Name      string    `json:"name" binding:"required"`
-	Phone     string    `json:"phone" binding:"required"`
-	Role      string    `json:"role" binding:"required,oneof=buyer seller admin"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID         int64     `json:"id" binding:"required"`
+	Email      string    `json:"email" binding:"required"`
+	Firstname  string    `json:"firstname" binding:"required"`
+	Lastname   string    `json:"lastname" binding:"required"`
+	PostNumber string    `json:"post_number" binding:"required"`
+	Street     string    `json:"street" binding:"required"`
+	Phone      string    `json:"phone" binding:"required"`
+	Role       string    `json:"role" binding:"required,oneof=buyer seller admin"`
+	UpdatedAt  time.Time `json:"updated_at"`
 }
 
 func newUserResponse(user db.User) userResponse {
 	return userResponse{
-		ID:        user.ID,
-		Name:      user.Name,
-		Email:     user.Email,
-		Phone:     user.Phone,
-		Role:      user.Role,
-		UpdatedAt: user.UpdatedAt,
+		ID:         user.ID,
+		Email:      user.Email,
+		Firstname:  user.Firstname,
+		Lastname:   user.Lastname,
+		PostNumber: user.PostNumber,
+		Street:     user.Street,
+		Phone:      user.Phone,
+		Role:       user.Role,
+		UpdatedAt:  user.UpdatedAt,
 	}
 }
 
@@ -56,13 +65,16 @@ func (server *Server) createUser(ctx *gin.Context) {
 	}
 
 	arg := db.CreateUserParams{
-		Email:     req.Email,
-		Password:  hashedPassword,
-		Name:      req.Name,
-		Phone:     req.Phone,
-		Role:      req.Role,
-		CreatedBy: req.CreatedBy,
-		UpdatedBy: req.UpdatedBy,
+		Email:      req.Email,
+		Password:   hashedPassword,
+		Firstname:  req.Firstname,
+		Lastname:   req.Lastname,
+		PostNumber: req.PostNumber,
+		Street:     req.Street,
+		Phone:      req.Phone,
+		Role:       req.Role,
+		CreatedBy:  req.CreatedBy,
+		UpdatedBy:  req.UpdatedBy,
 	}
 
 	result, err := server.store.CreateUser(ctx, arg)
@@ -150,7 +162,10 @@ func (server *Server) listUser(ctx *gin.Context) {
 type updateUserRequest struct {
 	Email     string `json:"email" binding:"omitempty,email"`
 	Password  string `json:"password,omitempty"`
-	Name      string `json:"name,omitempty"`
+	Firstname      string `json:"firstname,omitempty"`
+	Lastname      string `json:"lastname,omitempty"`
+	PostNumber      string `json:"post_number,omitempty"`
+	Street      string `json:"street,omitempty"`
 	Phone     string `json:"phone,omitempty"`
 	Role      string `json:"role,omitempty" binding:"omitempty,oneof=buyer seller admin"`
 	UpdatedBy int64  `json:"updated_by"`
@@ -191,13 +206,16 @@ func (server *Server) updateUser(ctx *gin.Context) {
 
 	// Merge the existing data with the request data
 	arg := db.UpdateUserParams{
-		ID:        id,
-		Email:     req.Email,
-		Password:  hashedPassword,
-		Name:      req.Name,
-		Phone:     req.Phone,
-		Role:      req.Role,
-		UpdatedBy: req.UpdatedBy,
+		ID:         id,
+		Email:      req.Email,
+		Password:   hashedPassword,
+		Firstname:  req.Firstname,
+		Lastname:   req.Lastname,
+		PostNumber: req.PostNumber,
+		Street:     req.Street,
+		Phone:      req.Phone,
+		Role:       req.Role,
+		UpdatedBy:  req.UpdatedBy,
 	}
 
 	// Use existing values if not provided in the request
@@ -207,8 +225,17 @@ func (server *Server) updateUser(ctx *gin.Context) {
 	if arg.Password == "" {
 		arg.Password = existingUser.Password
 	}
-	if arg.Name == "" {
-		arg.Name = existingUser.Name
+	if arg.Firstname == "" {
+		arg.Firstname = existingUser.Firstname
+	}
+	if arg.Lastname == "" {
+		arg.Lastname = existingUser.Lastname
+	}
+	if arg.PostNumber == "" {
+		arg.PostNumber = existingUser.PostNumber
+	}
+	if arg.Street == "" {
+		arg.Street = existingUser.Street
 	}
 	if arg.Phone == "" {
 		arg.Phone = existingUser.Phone

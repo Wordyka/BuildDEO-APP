@@ -56,6 +56,20 @@ func (server *Server) setupRouter() {
 	authRoutes.PUT("/quotation/:id", server.updateQuotation)
 	authRoutes.DELETE("/quotation/:id", server.deleteQuotation)
 
+	// category management
+	authRoutes.POST("/categories", server.createCategory)
+	authRoutes.GET("/categories/:id", server.getCategory)
+	authRoutes.GET("/categories", server.listCategory)
+	authRoutes.PUT("/categories/:id", server.updateCategory)
+	authRoutes.DELETE("/categories/:id", server.deleteCategory)
+
+	// service management
+	authRoutes.POST("/services", server.createService)
+	authRoutes.GET("/services/:id", server.getService)
+	authRoutes.GET("/services", server.listService)
+	authRoutes.PUT("/services/:id", server.updateService)
+	authRoutes.DELETE("/services/:id", server.deleteService)
+
 	server.router = router
 }
 

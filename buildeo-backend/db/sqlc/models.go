@@ -163,11 +163,14 @@ type Transaction struct {
 }
 
 type User struct {
-	ID       int64  `json:"id"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Name     string `json:"name"`
-	Phone    string `json:"phone"`
+	ID         int64  `json:"id"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+	Firstname  string `json:"firstname"`
+	Lastname   string `json:"lastname"`
+	PostNumber string `json:"post_number"`
+	Street     string `json:"street"`
+	Phone      string `json:"phone"`
 	// buyer, seller, or admin
 	Role      string    `json:"role"`
 	CreatedAt time.Time `json:"created_at"`

@@ -1,8 +1,8 @@
 -- name: CreateUser :execresult
 INSERT INTO users (
-  email, password, name, phone, role, created_by, updated_by
+  email, password, firstname, lastname, post_number, street, phone, role, created_by, updated_by
 ) VALUES (
-  ?, ?, ?, ?, ?, ?, ?
+  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 );
 
 -- name: GetUser :one
@@ -26,7 +26,7 @@ LIMIT ? OFFSET ?;
 
 -- name: UpdateUser :execresult
 UPDATE users
-SET email = ?, password = ?, name = ?, phone = ?, role = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP
+SET email = ?, password = ?, firstname = ?, lastname = ?, phone = ?, post_number = ?, street = ?, role = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP
 WHERE id = ?;
 
 -- name: DeleteUser :exec

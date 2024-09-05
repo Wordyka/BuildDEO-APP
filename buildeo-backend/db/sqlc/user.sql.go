@@ -12,27 +12,33 @@ import (
 
 const createUser = `-- name: CreateUser :execresult
 INSERT INTO users (
-  email, password, name, phone, role, created_by, updated_by
+  email, password, firstname, lastname, post_number, street, phone, role, created_by, updated_by
 ) VALUES (
-  ?, ?, ?, ?, ?, ?, ?
+  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
 `
 
 type CreateUserParams struct {
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	Name      string `json:"name"`
-	Phone     string `json:"phone"`
-	Role      string `json:"role"`
-	CreatedBy int64  `json:"created_by"`
-	UpdatedBy int64  `json:"updated_by"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+	Firstname  string `json:"firstname"`
+	Lastname   string `json:"lastname"`
+	PostNumber string `json:"post_number"`
+	Street     string `json:"street"`
+	Phone      string `json:"phone"`
+	Role       string `json:"role"`
+	CreatedBy  int64  `json:"created_by"`
+	UpdatedBy  int64  `json:"updated_by"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error) {
 	return q.db.ExecContext(ctx, createUser,
 		arg.Email,
 		arg.Password,
-		arg.Name,
+		arg.Firstname,
+		arg.Lastname,
+		arg.PostNumber,
+		arg.Street,
 		arg.Phone,
 		arg.Role,
 		arg.CreatedBy,
@@ -50,7 +56,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by 
+SELECT id, email, password, firstname, lastname, post_number, street, phone, role, created_at, created_by, updated_at, updated_by 
 FROM users
 WHERE email = ?
 LIMIT 1
@@ -63,7 +69,10 @@ func (q *Queries) GetUser(ctx context.Context, email string) (User, error) {
 		&i.ID,
 		&i.Email,
 		&i.Password,
-		&i.Name,
+		&i.Firstname,
+		&i.Lastname,
+		&i.PostNumber,
+		&i.Street,
 		&i.Phone,
 		&i.Role,
 		&i.CreatedAt,
@@ -75,7 +84,7 @@ func (q *Queries) GetUser(ctx context.Context, email string) (User, error) {
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by 
+SELECT id, email, password, firstname, lastname, post_number, street, phone, role, created_at, created_by, updated_at, updated_by 
 FROM users
 WHERE id = ?
 LIMIT 1
@@ -88,7 +97,10 @@ func (q *Queries) GetUserByID(ctx context.Context, id int64) (User, error) {
 		&i.ID,
 		&i.Email,
 		&i.Password,
-		&i.Name,
+		&i.Firstname,
+		&i.Lastname,
+		&i.PostNumber,
+		&i.Street,
 		&i.Phone,
 		&i.Role,
 		&i.CreatedAt,
@@ -100,7 +112,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id int64) (User, error) {
 }
 
 const listUsers = `-- name: ListUsers :many
-SELECT id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by 
+SELECT id, email, password, firstname, lastname, post_number, street, phone, role, created_at, created_by, updated_at, updated_by 
 FROM users
 ORDER BY id 
 LIMIT ? OFFSET ?
@@ -124,7 +136,10 @@ func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, e
 			&i.ID,
 			&i.Email,
 			&i.Password,
-			&i.Name,
+			&i.Firstname,
+			&i.Lastname,
+			&i.PostNumber,
+			&i.Street,
 			&i.Phone,
 			&i.Role,
 			&i.CreatedAt,
@@ -147,26 +162,32 @@ func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, e
 
 const updateUser = `-- name: UpdateUser :execresult
 UPDATE users
-SET email = ?, password = ?, name = ?, phone = ?, role = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP
+SET email = ?, password = ?, firstname = ?, lastname = ?, phone = ?, post_number = ?, street = ?, role = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP
 WHERE id = ?
 `
 
 type UpdateUserParams struct {
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	Name      string `json:"name"`
-	Phone     string `json:"phone"`
-	Role      string `json:"role"`
-	UpdatedBy int64  `json:"updated_by"`
-	ID        int64  `json:"id"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+	Firstname  string `json:"firstname"`
+	Lastname   string `json:"lastname"`
+	Phone      string `json:"phone"`
+	PostNumber string `json:"post_number"`
+	Street     string `json:"street"`
+	Role       string `json:"role"`
+	UpdatedBy  int64  `json:"updated_by"`
+	ID         int64  `json:"id"`
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (sql.Result, error) {
 	return q.db.ExecContext(ctx, updateUser,
 		arg.Email,
 		arg.Password,
-		arg.Name,
+		arg.Firstname,
+		arg.Lastname,
 		arg.Phone,
+		arg.PostNumber,
+		arg.Street,
 		arg.Role,
 		arg.UpdatedBy,
 		arg.ID,

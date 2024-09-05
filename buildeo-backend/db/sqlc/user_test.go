@@ -17,7 +17,10 @@ func createRandomUser(t *testing.T) User {
 	arg := CreateUserParams{
 		Email:     util.RandomEmail(),
 		Password:  hashedPassword,
-		Name:      "Tom",
+		Firstname:      "Tom",
+		Lastname:      "Haye",
+		PostNumber:      "22381",
+		Street:      "Hauptstrasse 24",
 		Phone:     "08123456789",
 		Role:      "buyer",
 		CreatedBy: 1,
@@ -34,7 +37,10 @@ func createRandomUser(t *testing.T) User {
 		ID:        id,
 		Email:     arg.Email,
 		Password:  arg.Password,
-		Name:      arg.Name,
+		Firstname:      arg.Firstname,
+		Lastname:      arg.Lastname,
+		PostNumber:      arg.PostNumber,
+		Street:      arg.Street,
 		Phone:     arg.Phone,
 		Role:      arg.Role,
 		CreatedAt: time.Now(), 
@@ -53,7 +59,10 @@ func TestCreateUser(t *testing.T) {
 	require.Equal(t, user.ID, dbUser.ID)
 	require.Equal(t, user.Email, dbUser.Email)
 	require.Equal(t, user.Password, dbUser.Password)
-	require.Equal(t, user.Name, dbUser.Name)
+	require.Equal(t, user.Firstname, dbUser.Firstname)
+	require.Equal(t, user.Lastname, dbUser.Lastname)
+	require.Equal(t, user.PostNumber, dbUser.PostNumber)
+	require.Equal(t, user.Street, dbUser.Street)
 	require.Equal(t, user.Phone, dbUser.Phone)
 	require.Equal(t, user.Role, dbUser.Role)
 	// require.WithinDuration(t, user.CreatedAt, dbUser.CreatedAt, 5*time.Hour+time.Millisecond) // need to set global timezone 
@@ -68,7 +77,10 @@ func TestGetUser(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, user.ID, retrievedUser.ID)
 	require.Equal(t, user.Email, retrievedUser.Email)
-	require.Equal(t, user.Name, retrievedUser.Name)
+	require.Equal(t, user.Firstname, retrievedUser.Firstname)
+	require.Equal(t, user.Lastname, retrievedUser.Lastname)
+	require.Equal(t, user.PostNumber, retrievedUser.PostNumber)
+	require.Equal(t, user.Street, retrievedUser.Street)
 	require.Equal(t, user.Phone, retrievedUser.Phone)
 	require.Equal(t, user.Role, retrievedUser.Role)
 	// require.WithinDuration(t, user.CreatedAt, retrievedUser.CreatedAt, 5*time.Hour+time.Millisecond) // need to set global timezone 
@@ -79,7 +91,15 @@ func TestUpdateUser(t *testing.T) {
 
 	arg := UpdateUserParams{
 		ID:   user.ID,
-		Name: "Updated Name",
+		Firstname: "Updated Name",
+		Email:     user.Email,
+		Password:  user.Password,
+		Lastname:      user.Lastname,
+		PostNumber:      user.PostNumber,
+		Street:      user.Street,
+		Phone:     user.Phone,
+		Role:      user.Role,
+		UpdatedBy: user.UpdatedBy,
 	}
 
 	_, err := testQueries.UpdateUser(context.Background(), arg)
@@ -88,7 +108,7 @@ func TestUpdateUser(t *testing.T) {
 	// Verify the user is updated
 	updatedUser, err := testQueries.GetUserByID(context.Background(), user.ID)
 	require.NoError(t, err)
-	require.Equal(t, arg.Name, updatedUser.Name)
+	require.Equal(t, arg.Firstname, updatedUser.Firstname)
 }
 
 func TestDeleteUser(t *testing.T) {
