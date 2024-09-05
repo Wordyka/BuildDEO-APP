@@ -10,6 +10,8 @@ import OrdersPage from "./pages/Profile/orders";
 import ResultPage from "./pages/Profile/Review/result";
 import ReviewPage from "./pages/Profile/Review/review";
 import EditPage from "./pages/Profile/Review/edit";
+import PrinciplePage from "./pages/Principle";
+import HomeCompanyPage from "./pages/Craftman/Home";
 // import Home from "./pages/Home";
 
 
@@ -28,6 +30,10 @@ export default function App() {
         <Route path="/orders/review" element={<ReviewPage />} />
         <Route path="/orders/review/result" element={<ResultPage />} />
         <Route path="/orders/review/edit" element={<EditPage />} />
+        <Route path="/principle" element={<PrinciplePage />} />
+
+        {/* Craftman */}
+        <Route path="/home/craftman" element={<HomeCompanyPage/>}/>
       </Routes>
     </Router>
   )

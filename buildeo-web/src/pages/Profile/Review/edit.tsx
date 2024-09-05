@@ -2,6 +2,7 @@ import DynamicRating from '../../../Components/Ui/rating'
 import Footer from '../../../Components/Ui/footer'
 import NavbarSearch from '../../../Components/Ui/headerSearhc'
 import cover from '/cover.png'
+
 export default function EditPage() {
   return (
      <>
@@ -31,7 +32,6 @@ export default function EditPage() {
                                    </div>
 
                               </form>
-
                          </div>
                     </div>
                     <Footer />

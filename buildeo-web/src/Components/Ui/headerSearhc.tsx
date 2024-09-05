@@ -7,10 +7,13 @@ import ProfileIcon from '../Icon/ProfileIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Input } from './input';
+import MessageIcon from '../Icon/MessageIcon';
 
 
 export default function NavbarSearch() {
      const [navbar, setNavbar] = useState(false);
+
+     const [isLoggedIn, setIsLoggedIn] = useState(false);
      return (
           <div className="navbar flex flex-wrap items-center justify-between pl-4 pr-4 text-black  text-[12px] z-[9] bg-[#FFFFFF]">
                <div className="md:flex p-1  md:items w-full">
@@ -32,24 +35,48 @@ export default function NavbarSearch() {
                          <div className={`flex flex-col gap-[50px] text-left md:text-right text-[15px] md:flex md:items-center space-x-0 md:space-x-12   md:flex-row ${navbar ? "flex" : "hidden"
                               }`}>
                               <div className="flex justify-center mt-[20px]">
-                                   <div className="relative w-[476px]">
+                                   <div className="relative w-[300px]">
                                         <FontAwesomeIcon icon={faSearch} className="absolute top-[13px] left-[20px] " color="black" />
                                         <Input
                                              placeholder="search"
-                                             className="pl-[49px] text-black font-medium rounded-[10px] h-[40px] border border-[#737B7D] border-[1.5px]" 
+                                             className="pl-[49px] text-black font-medium rounded-[10px] h-[40px] border border-[#737B7D] border-[1.5px]"
                                         />
                                    </div>
                               </div>
-                              <div className="md:pl-[200px] md:mt-5 font-bold">
-                                   <Link to={''}>
+                              <div className=" md:mt-5 font-bold">
+                                   <Link to={'/home'}>
                                         Home
                                    </Link>
                               </div>
-                              <div className="md:mt-5">
+                              <div className=" md:mt-5 font-bold">
                                    <Link to={''}>
-                                        <ProfileIcon width={20} color='black'/>
+                                        Favorable Offer
                                    </Link>
                               </div>
+                              {isLoggedIn ? (
+                                   <>
+                                        <div className="md:mt-5">
+                                             <Link to={''}>
+                                                  <MessageIcon width={20} color='black' />
+                                             </Link>
+                                        </div>
+                                        <div className="md:mt-5">
+                                             <Link to={''}>
+                                                  <ProfileIcon width={20} color='black' />
+                                             </Link>
+                                        </div>
+                                   </>
+                              ) : (
+                                   <>
+                                        <div className="md:mt-5">
+                                             <button className='bg-[#FFFFFF] text-[#E31E24] border border-[#E31E24] rounded-[5px] w-[80px] p-[7px]'>Register</button>
+
+                                        </div>
+                                        <div className="md:mt-5">
+                                             <button className='bg-[#E31E24] text-white rounded-[5px] w-[80px] p-[7px] '> Login</button>
+                                        </div>
+                                   </>
+                              )}
                          </div>
                     </div>
 
