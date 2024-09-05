@@ -6,14 +6,21 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
 type Querier interface {
-	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
+	CreateQuotation(ctx context.Context, arg CreateQuotationParams) (sql.Result, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error)
+	DeleteQuotation(ctx context.Context, id int64) error
 	DeleteUser(ctx context.Context, id int64) error
-	GetUser(ctx context.Context, id int64) (User, error)
+	GetQuotation(ctx context.Context, id int64) (Quotation, error)
+	GetUser(ctx context.Context, email string) (User, error)
+	GetUserByID(ctx context.Context, id int64) (User, error)
+	ListQuotations(ctx context.Context, arg ListQuotationsParams) ([]Quotation, error)
 	ListUsers(ctx context.Context, arg ListUsersParams) ([]User, error)
-	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
+	UpdateQuotation(ctx context.Context, arg UpdateQuotationParams) (sql.Result, error)
+	UpdateUser(ctx context.Context, arg UpdateUserParams) (sql.Result, error)
 }
 
 var _ Querier = (*Queries)(nil)

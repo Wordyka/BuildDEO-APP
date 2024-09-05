@@ -7,15 +7,15 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
-const createUser = `-- name: CreateUser :one
+const createUser = `-- name: CreateUser :execresult
 INSERT INTO users (
   email, password, name, phone, role, created_by, updated_by
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7
+  ?, ?, ?, ?, ?, ?, ?
 )
-RETURNING id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by
 `
 
 type CreateUserParams struct {
@@ -28,8 +28,8 @@ type CreateUserParams struct {
 	UpdatedBy int64  `json:"updated_by"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, createUser,
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createUser,
 		arg.Email,
 		arg.Password,
 		arg.Name,
@@ -38,6 +38,26 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		arg.CreatedBy,
 		arg.UpdatedBy,
 	)
+}
+
+const deleteUser = `-- name: DeleteUser :exec
+DELETE FROM users WHERE id = ?
+`
+
+func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
+	_, err := q.db.ExecContext(ctx, deleteUser, id)
+	return err
+}
+
+const getUser = `-- name: GetUser :one
+SELECT id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by 
+FROM users
+WHERE email = ?
+LIMIT 1
+`
+
+func (q *Queries) GetUser(ctx context.Context, email string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUser, email)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -54,24 +74,15 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 	return i, err
 }
 
-const deleteUser = `-- name: DeleteUser :exec
-DELETE FROM users WHERE id = $1
-`
-
-func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
-	_, err := q.db.ExecContext(ctx, deleteUser, id)
-	return err
-}
-
-const getUser = `-- name: GetUser :one
+const getUserByID = `-- name: GetUserByID :one
 SELECT id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by 
 FROM users
-WHERE id = $1
+WHERE id = ?
 LIMIT 1
 `
 
-func (q *Queries) GetUser(ctx context.Context, id int64) (User, error) {
-	row := q.db.QueryRowContext(ctx, getUser, id)
+func (q *Queries) GetUserByID(ctx context.Context, id int64) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByID, id)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -92,8 +103,7 @@ const listUsers = `-- name: ListUsers :many
 SELECT id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by 
 FROM users
 ORDER BY id 
-LIMIT $1
-OFFSET $2
+LIMIT ? OFFSET ?
 `
 
 type ListUsersParams struct {
@@ -135,32 +145,30 @@ func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, e
 	return items, nil
 }
 
-const updateUser = `-- name: UpdateUser :one
+const updateUser = `-- name: UpdateUser :execresult
 UPDATE users
-SET name = $2
-WHERE id = $1
-RETURNING id, email, password, name, phone, role, created_at, created_by, updated_at, updated_by
+SET email = ?, password = ?, name = ?, phone = ?, role = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP
+WHERE id = ?
 `
 
 type UpdateUserParams struct {
-	ID   int64  `json:"id"`
-	Name string `json:"name"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	Name      string `json:"name"`
+	Phone     string `json:"phone"`
+	Role      string `json:"role"`
+	UpdatedBy int64  `json:"updated_by"`
+	ID        int64  `json:"id"`
 }
 
-func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, updateUser, arg.ID, arg.Name)
-	var i User
-	err := row.Scan(
-		&i.ID,
-		&i.Email,
-		&i.Password,
-		&i.Name,
-		&i.Phone,
-		&i.Role,
-		&i.CreatedAt,
-		&i.CreatedBy,
-		&i.UpdatedAt,
-		&i.UpdatedBy,
+func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, updateUser,
+		arg.Email,
+		arg.Password,
+		arg.Name,
+		arg.Phone,
+		arg.Role,
+		arg.UpdatedBy,
+		arg.ID,
 	)
-	return i, err
 }
