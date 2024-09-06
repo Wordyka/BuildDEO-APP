@@ -65,13 +65,22 @@ func (server *Server) createService(ctx *gin.Context) {
 		UpdatedBy:   req.UpdatedBy,
 	}
 
-	_, err := server.store.CreateService(ctx, arg)
+	service, err := server.store.CreateService(ctx, arg)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"message": "service created successfully"})
+	serviceID, err := service.LastInsertId()
+
+	result, err := server.store.GetServiceByID(ctx, serviceID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	rsp := newServiceResponse(result)
+	ctx.JSON(http.StatusOK, rsp)
 }
 
 // Get a service by ID
@@ -100,6 +109,8 @@ func (server *Server) getService(ctx *gin.Context) {
 // Update a service
 type updateServiceRequest struct {
 	Title       string `json:"title,omitempty"`
+	SellerID    int64  `json:"seller_id,omitempty"`
+	CategoryID  int64  `json:"category_id,omitempty"`
 	Description string `json:"description,omitempty"`
 	Price       int64  `json:"price,omitempty"`
 	UpdatedBy   int64  `json:"updated_by" binding:"required"`
@@ -119,35 +130,16 @@ func (server *Server) updateService(ctx *gin.Context) {
 		return
 	}
 
-	// Fetch the existing service record
-	existingService, err := server.store.GetServiceByID(ctx, id)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, errorResponse(err))
-			return
-		}
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-		return
-	}
-
-	// Merge the request data with the existing service data
 	arg := db.UpdateServiceParams{
 		ID:          id,
-		Title:       existingService.Title,
-		Description: existingService.Description,
-		Price:       existingService.Price,
+		SellerID:    req.SellerID,
+		CategoryID:  req.CategoryID,
+		Title:       req.Title,
+		Description: sql.NullString{String: req.Description, Valid: true},
+		Price:       req.Price,
 		UpdatedBy:   req.UpdatedBy,
 	}
 
-	if req.Title != "" {
-		arg.Title = req.Title
-	}
-	if req.Description != "" {
-		arg.Description = sql.NullString{String: req.Description, Valid: true}
-	}
-	if req.Price != 0 {
-		arg.Price = req.Price
-	}
 
 	_, err = server.store.UpdateService(ctx, arg)
 	if err != nil {

@@ -53,13 +53,22 @@ func (server *Server) createCategory(ctx *gin.Context) {
 		UpdatedBy:   req.UpdatedBy,
 	}
 
-	_, err := server.store.CreateCategory(ctx, arg)
+	category, err := server.store.CreateCategory(ctx, arg)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "category created successfully"})
+	categoryID, err := category.LastInsertId()
+
+	result, err := server.store.GetCategory(ctx, categoryID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	rsp := newCategoryResponse(result)
+	ctx.JSON(http.StatusOK, rsp)
 }
 
 type getCategoryRequest struct {

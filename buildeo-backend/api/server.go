@@ -58,8 +58,8 @@ func (server *Server) setupRouter() {
 
 	// category management
 	authRoutes.POST("/categories", server.createCategory)
-	authRoutes.GET("/categories/:id", server.getCategory)
-	authRoutes.GET("/categories", server.listCategory)
+	router.GET("/categories/:id", server.getCategory)
+	router.GET("/categories", server.listCategory)
 	authRoutes.PUT("/categories/:id", server.updateCategory)
 	authRoutes.DELETE("/categories/:id", server.deleteCategory)
 
