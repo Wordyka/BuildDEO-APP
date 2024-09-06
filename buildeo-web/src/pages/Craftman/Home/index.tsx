@@ -87,6 +87,7 @@ export default function HomeCompanyPage() {
                                                        company={card.company}
                                                        price={card.price}
                                                        img={cover}
+                                                       link="/home/craftman/product-detail"
                                                   />
                                              ))}
                                         </div>

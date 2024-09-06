@@ -62,6 +62,7 @@ export default function MenuPage() {
                                                        company={card.company}
                                                        price={card.price}
                                                        img={cover}
+                                                        link="/menu-detail"
                                                   />
                                              ))}
                                         </div>
@@ -77,6 +78,7 @@ export default function MenuPage() {
                                                        company={card.company}
                                                        price={card.price}
                                                        img={media}
+                                                        link="/menu-detail"
                                                   />
                                              ))}
                                         </div>
@@ -92,6 +94,7 @@ export default function MenuPage() {
                                                        company={card.company}
                                                        price={card.price}
                                                        img={jobs}
+                                                        link="/menu-detail"
                                                   />
                                              ))}
                                         </div>

@@ -6,10 +6,11 @@ interface CardProps {
     company: string;
     price: string;
     img:string
+    link:string
 }
 
-const Card: React.FC<CardProps> = ({ title, company, price ,img }) => (
-    <Link to={'/menu-detail'}>
+const Card: React.FC<CardProps> = ({ title, company, price ,img,link }) => (
+    <Link to={link}>
     <div className="card bg-white rounded-[10px] w-[213px] p-[12px] shadow">
         <img src={img} alt="Cover" className="rounded-[10px]" />
         <div className="font-bold text-[18px] mt-[12px]">{title}</div>

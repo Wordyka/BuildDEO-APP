@@ -12,6 +12,7 @@ import ReviewPage from "./pages/Profile/Review/review";
 import EditPage from "./pages/Profile/Review/edit";
 import PrinciplePage from "./pages/Principle";
 import HomeCompanyPage from "./pages/Craftman/Home";
+import DetailProduct from "./pages/Craftman/Product/detail";
 // import Home from "./pages/Home";
 
 
@@ -34,6 +35,8 @@ export default function App() {
 
         {/* Craftman */}
         <Route path="/home/craftman" element={<HomeCompanyPage/>}/>
+        <Route path="/home/craftman/product-detail" element={<DetailProduct/>}/>
+        
       </Routes>
     </Router>
   )
