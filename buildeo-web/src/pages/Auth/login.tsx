@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
   const [isCraftman, setIsCraftman] = useState(true);
   const navigate = useNavigate();
-  
 
   // Manage form input state for email and password
   const [formData, setFormData] = useState({
@@ -42,8 +41,9 @@ export default function LoginPage() {
         setError(errorData.error); // Set error message if login fails
       } else {
         const data = await response.json();
-        console.log(data); // Handle successful login, e.g., store token
-        navigate("/home"); // Navigate to the home page after successful login
+        localStorage.setItem("access_token", data.access_token); // Save the token in localStorage
+        localStorage.setItem("user", JSON.stringify(data.user)); // Optionally store user info
+        navigate("/profile"); // Navigate to the home page after successful login
       }
     } catch (err) {
       setError("Login failed. Please try again.");
@@ -112,7 +112,9 @@ export default function LoginPage() {
                   />
                 </div>
                 {error && (
-                  <div className="text-red-500 text-center mt-4">Invalid email or password, please try again</div>
+                  <div className="text-red-500 text-center mt-4">
+                    Invalid email or password, please try again
+                  </div>
                 )}
                 <div className="text-end text-[#FF460A] font-bold mt-[37px] mb-[37px]">
                   <Link to="" className="text-end">

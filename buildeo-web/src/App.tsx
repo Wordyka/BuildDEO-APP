@@ -13,31 +13,116 @@ import EditPage from "./pages/Profile/Review/edit";
 import PrinciplePage from "./pages/Principle";
 import HomeCompanyPage from "./pages/Craftman/Home";
 import DetailProduct from "./pages/Craftman/Product/detail";
-// import Home from "./pages/Home";
-
+import AuthMiddleware from "./utils/AuthMiddleware";
 
 export default function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/menu" element={<MenuPage />} />
-        <Route path="/menu-detail" element={<DetailMenuPage />} />
-        <Route path="/menu-detail/payment" element={<PaymentPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/orders" element={<OrdersPage />} />
-        <Route path="/orders/review" element={<ReviewPage />} />
-        <Route path="/orders/review/result" element={<ResultPage />} />
-        <Route path="/orders/review/edit" element={<EditPage />} />
-        <Route path="/principle" element={<PrinciplePage />} />
 
-        {/* Craftman */}
-        <Route path="/home/craftman" element={<HomeCompanyPage/>}/>
-        <Route path="/home/craftman/product-detail" element={<DetailProduct/>}/>
-        
+        {/* Protected Routes */}
+        <Route
+          path="/home"
+          element={
+            <AuthMiddleware>
+              <Home />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/menu"
+          element={
+            <AuthMiddleware>
+              <MenuPage />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/menu-detail"
+          element={
+            <AuthMiddleware>
+              <DetailMenuPage />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/menu-detail/payment"
+          element={
+            <AuthMiddleware>
+              <PaymentPage />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <AuthMiddleware>
+              <ProfilePage />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <AuthMiddleware>
+              <OrdersPage />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/orders/review"
+          element={
+            <AuthMiddleware>
+              <ReviewPage />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/orders/review/result"
+          element={
+            <AuthMiddleware>
+              <ResultPage />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/orders/review/edit"
+          element={
+            <AuthMiddleware>
+              <EditPage />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/principle"
+          element={
+            <AuthMiddleware>
+              <PrinciplePage />
+            </AuthMiddleware>
+          }
+        />
+
+        {/* Craftman Routes */}
+        <Route
+          path="/home/craftman"
+          element={
+            <AuthMiddleware>
+              <HomeCompanyPage />
+            </AuthMiddleware>
+          }
+        />
+        <Route
+          path="/home/craftman/product-detail"
+          element={
+            <AuthMiddleware>
+              <DetailProduct />
+            </AuthMiddleware>
+          }
+        />
       </Routes>
     </Router>
-  )
+  );
 }

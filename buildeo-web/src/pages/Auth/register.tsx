@@ -108,7 +108,7 @@ export default function RegisterPage() {
          setSuccess(true);
          setShowAlert(true);
          // Navigate to another page, e.g., login page or dashboard
-         navigate("/home");
+         navigate("/");
        }
      } catch (err) {
        setShowAlert(false);
