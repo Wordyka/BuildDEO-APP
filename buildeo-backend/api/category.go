@@ -144,7 +144,7 @@ func (server *Server) updateCategory(ctx *gin.Context) {
 
 	arg := db.UpdateCategoryParams{
 		ID:          id,
-		Name:        req.Name,
+		Name:        req.Name,	
 		Description: sql.NullString{String: req.Description, Valid: true},
 		UpdatedBy:   req.UpdatedBy,
 	}
