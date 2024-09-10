@@ -2,10 +2,12 @@ package api
 
 import (
 	"fmt"
+	"time"
 
 	db "github.com/Oppir07/BuildDEO-APP/db/sqlc"
 	"github.com/Oppir07/BuildDEO-APP/token"
 	"github.com/Oppir07/BuildDEO-APP/util"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,6 +38,15 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 
 func (server *Server) setupRouter() {
 	router := gin.Default()
+
+	// Add CORS middleware
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"}, // Replace with your frontend's origin
+		AllowMethods:     []string{"POST", "GET", "OPTIONS", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	//authentication
 	router.POST("/users/login", server.loginUser)
