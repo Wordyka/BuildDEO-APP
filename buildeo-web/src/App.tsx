@@ -13,7 +13,11 @@ import EditPage from "./pages/Profile/Review/edit";
 import PrinciplePage from "./pages/Principle";
 import HomeCompanyPage from "./pages/Craftman/Home";
 import DetailProduct from "./pages/Craftman/Product/detail";
-// import Home from "./pages/Home";
+import CreateProductPage from "./pages/Craftman/Product/create";
+import ProductNewPage from "./pages/Craftman/Product";
+import EditProductPage from "./pages/Craftman/Product/edit";
+import RatingPage from "./pages/Craftman/Home/detailRating";
+import DetailBuyerPage from "./pages/Craftman/Home/detailBuyer";
 
 
 export default function App() {
@@ -36,7 +40,12 @@ export default function App() {
         {/* Craftman */}
         <Route path="/home/craftman" element={<HomeCompanyPage/>}/>
         <Route path="/home/craftman/product-detail" element={<DetailProduct/>}/>
-        
+        <Route path="/home/craftman/create-product" element={<CreateProductPage/>}/>
+        <Route path="/home/craftman/show-product" element={<ProductNewPage/>}/>
+        <Route path="/home/craftman/edit-product" element={<EditProductPage/>}/>
+        <Route path="/home/craftman/rating-product" element={<RatingPage/>}/>
+        <Route path="/home/craftman/buyer/confirm-product" element={<DetailBuyerPage/>}/>
+
       </Routes>
     </Router>
   )
