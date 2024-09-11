@@ -1,5 +1,5 @@
-# Use a specific Go version with Alpine Linux as the base image
-FROM golang:1.21-alpine3.19 as builder
+# Use Go version 1.23 with Alpine Linux as the base image
+FROM golang:1.23-alpine3.19 as builder
 
 WORKDIR /app
 
