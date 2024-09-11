@@ -41,12 +41,13 @@ func (server *Server) setupRouter() {
 
 	// Add CORS middleware
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"}, // Replace with your frontend's origin
-		AllowMethods:     []string{"POST", "GET", "OPTIONS", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
+	    AllowOrigins:     []string{"*"}, // Allow all origins or replace with frontend domain for security
+	    AllowMethods:     []string{"POST", "GET", "OPTIONS", "PUT", "DELETE"},
+	    AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+	    AllowCredentials: true,
+	    MaxAge:           12 * time.Hour,
 	}))
+
 
 	//authentication
 	router.POST("/users/login", server.loginUser)
